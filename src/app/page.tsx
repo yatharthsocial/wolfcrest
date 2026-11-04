@@ -46,7 +46,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/35" />
         <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/40 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="hero-dim absolute inset-0 bg-black/70" />
+        <div className="hero-dim absolute inset-0 bg-black" />
 
         <div className="relative flex h-full">
           {/* Left rail */}

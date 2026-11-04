@@ -2,47 +2,58 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type ComponentProps } from "react";
-import { createPortal } from "react-dom";
+import type { ComponentProps } from "react";
 
 // Matches the .page-curtain animation duration in globals.css
 const CURTAIN_MS = 900;
+// How long the curtain stays after navigating, while the new page paints
+const HOLD_MS = 350;
 
 type Props = ComponentProps<typeof Link> & { href: string };
 
+let navigating = false;
+
 /**
  * A Link that sweeps a black curtain across the screen before navigating.
- * The destination page starts black and fades in, so the hand-off is seamless.
+ * Every destination page starts black and fades in, so the hand-off is seamless.
+ *
+ * The curtain lives on document.body rather than in React state: Next keeps the
+ * page we leave alive in the background, so state here would survive and leave
+ * the curtain covering that page when the visitor comes back to it.
  */
 export function TransitionLink({ href, children, ...props }: Props) {
   const router = useRouter();
-  const [leaving, setLeaving] = useState(false);
 
   return (
-    <>
-      <Link
-        href={href}
-        {...props}
-        onNavigate={(e) => {
-          if (
-            href.startsWith("#") ||
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ) {
-            return;
-          }
-          e.preventDefault();
-          if (leaving) return;
-          setLeaving(true);
-          setTimeout(() => router.push(href), CURTAIN_MS);
-        }}
-      >
-        {children}
-      </Link>
-      {leaving &&
-        createPortal(
-          <div aria-hidden className="page-curtain fixed inset-0 z-50 bg-black" />,
-          document.body,
-        )}
-    </>
+    <Link
+      href={href}
+      {...props}
+      onNavigate={(e) => {
+        if (
+          href.startsWith("#") ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          return;
+        }
+        e.preventDefault();
+        if (navigating) return;
+        navigating = true;
+
+        const curtain = document.createElement("div");
+        curtain.setAttribute("aria-hidden", "true");
+        curtain.className = "page-curtain fixed inset-0 z-50 bg-black";
+        document.body.append(curtain);
+
+        setTimeout(() => {
+          router.push(href);
+          setTimeout(() => {
+            curtain.remove();
+            navigating = false;
+          }, HOLD_MS);
+        }, CURTAIN_MS);
+      }}
+    >
+      {children}
+    </Link>
   );
 }

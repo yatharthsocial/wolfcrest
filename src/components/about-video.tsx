@@ -44,6 +44,9 @@ export function AboutVideo() {
         video.muted = true;
         video.play().catch(() => {});
       });
+    // Next keeps this page alive in the background after navigating away,
+    // so stop playback (and its sound) when the page is hidden
+    return () => video.pause();
   }, []);
 
   const toggle = () => {
