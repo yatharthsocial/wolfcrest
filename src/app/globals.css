@@ -1,26 +1,263 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1c1a18;
+  --foreground: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-jost);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jost), Arial, Helvetica, sans-serif;
+}
+
+/* Hero intro animation: only transform and opacity animate, so every frame
+   runs on the compositor and never waits on layout or paint */
+.hero-dim,
+.hero-slide,
+.hero-brighten,
+.hero-line,
+.hero-reveal,
+.hero-reveal-inner {
+  animation-fill-mode: both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Dark veil over the photo that lifts as the page settles */
+@keyframes hero-dim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.hero-dim {
+  animation-name: hero-dim;
+  animation-duration: 2000ms;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  will-change: opacity;
+}
+
+/* Title block glides in from the left */
+@keyframes hero-slide {
+  from {
+    opacity: 0;
+    transform: translate3d(-45vw, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-slide {
+  animation-name: hero-slide;
+  animation-duration: 2200ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+/* Left rail starts muted and comes up to full white */
+@keyframes hero-brighten {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-brighten {
+  animation-name: hero-brighten;
+  animation-duration: 1600ms;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  will-change: opacity;
+}
+
+/* Divider lines draw downward from the top */
+@keyframes hero-line {
+  from {
+    transform: scale3d(1, 0, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.hero-line {
+  animation-name: hero-line;
+  animation-duration: 1800ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  transform-origin: top;
+  will-change: transform;
+}
+
+/* Text lines are revealed left to right: the outer box slides in from the
+   left while the text inside slides back the same amount, so the text stays
+   still and its visible edge sweeps across it */
+@keyframes hero-reveal {
+  from {
+    transform: translate3d(-101%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-reveal-inner {
+  from {
+    opacity: 0;
+    transform: translate3d(101%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-reveal {
+  display: block;
+  overflow: hidden;
+  animation-name: hero-reveal;
+  animation-duration: 1400ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.hero-reveal-inner {
+  display: block;
+  animation-name: hero-reveal-inner;
+  animation-duration: 1400ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform, opacity;
+}
+
+/* Nav hover: the label lifts and an arrow eases in below it */
+.nav-label,
+.nav-arrow {
+  transition-property: transform, opacity;
+  transition-duration: 900ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.nav-label {
+  opacity: 0.8;
+}
+
+.nav-arrow {
+  opacity: 0;
+  transform: translate3d(-0.6em, 0, 0);
+}
+
+@media (hover: hover) {
+  .group:hover .nav-label,
+  .group:focus-visible .nav-label {
+    opacity: 1;
+    transform: translate3d(0, -2.2em, 0);
+  }
+
+  .group:hover .nav-arrow,
+  .group:focus-visible .nav-arrow {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Page transition: black curtain sweeps in from the right */
+@keyframes page-curtain {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.page-curtain {
+  animation: page-curtain 900ms cubic-bezier(0.76, 0, 0.24, 1) both;
+  will-change: transform;
+}
+
+/* About page: right-hand panel glides in from the right edge */
+@keyframes panel-in {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.panel-in {
+  animation: panel-in 1400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--delay, 0ms);
+  will-change: transform;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fade-up {
+  animation: fade-up 1200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--delay, 0ms);
+  will-change: transform, opacity;
+}
+
+/* About video settles in from a slight zoom */
+@keyframes media-in {
+  from {
+    opacity: 0;
+    transform: scale3d(1.06, 1.06, 1);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.media-in {
+  animation: media-in 1800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--delay, 0ms);
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-curtain,
+  .media-in,
+  .panel-in,
+  .fade-up,
+  .hero-dim,
+  .hero-slide,
+  .hero-brighten,
+  .hero-line,
+  .hero-reveal,
+  .hero-reveal-inner {
+    animation: none;
+  }
+
+  .hero-dim {
+    opacity: 0;
+  }
+
+  .nav-label,
+  .nav-arrow {
+    transition-duration: 0ms;
+  }
 }
