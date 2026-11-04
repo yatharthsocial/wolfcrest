@@ -1,8 +1,9 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { HeroVideo } from "@/components/hero-video";
 import { TransitionLink } from "@/components/transition-link";
-import hero from "@/assets/hero.webp";
+import hero from "@/assets/hero-poster.jpg";
 import logo from "@/assets/logowolf.png";
 
 const navItems = [
@@ -34,18 +35,23 @@ export default function Home() {
   return (
     <main>
       <section className="relative h-svh min-h-[560px] w-full overflow-hidden bg-background text-white">
-        <Image
-          src={hero}
-          alt="City skyline at sunset"
-          fill
-          preload
-          placeholder="blur"
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/35" />
-        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/40 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
+        {/* Background: still first frame, with the loop fading in over it */}
+        <div className="hero-settle absolute inset-0">
+          <Image
+            src={hero}
+            alt="Dubai skyline from sunset into night"
+            fill
+            preload
+            placeholder="blur"
+            sizes="100vw"
+            className="object-cover"
+          />
+          <HeroVideo />
+        </div>
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/50 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/45 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/70 to-transparent" />
         <div className="hero-dim absolute inset-0 bg-black" />
 
         <div className="relative flex h-full">

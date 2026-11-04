@@ -172,6 +172,21 @@ body {
   }
 }
 
+/* Hero background eases out of a slight zoom as the veil lifts */
+@keyframes hero-settle {
+  from {
+    transform: scale3d(1.08, 1.08, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.hero-settle {
+  animation: hero-settle 3200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform;
+}
+
 /* Page transition: black curtain sweeps in from the right */
 @keyframes page-curtain {
   from {
@@ -240,6 +255,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .page-curtain,
+  .hero-settle,
   .media-in,
   .panel-in,
   .fade-up,
