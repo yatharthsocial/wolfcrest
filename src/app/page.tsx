@@ -2,15 +2,16 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { HeroVideo } from "@/components/hero-video";
+import { SocialLinks } from "@/components/social-links";
 import { TransitionLink } from "@/components/transition-link";
 import hero from "@/assets/hero-poster.jpg";
 import logo from "@/assets/logowolf.png";
 
 const navItems = [
   { label: ["About", "Wolfcrest"], href: "/about" },
-  { label: ["Find", "Your", "Wolfcrest"], href: "#find" },
-  { label: ["Wolfcrest", "Collection"], href: "#collection" },
-  { label: ["Why", "Wolfcrest"], href: "#why" },
+  { label: ["Service"], href: "/service" },
+  { label: ["Our", "Partners"], href: "/partners" },
+  { label: ["Media"], href: "/media" },
   { label: ["Offices"], href: "#offices" },
 ];
 
@@ -66,14 +67,18 @@ export default function Home() {
             >
               Enquire
             </a>
-            <Link href="/" className="block w-full px-[4%]">
-              <Image
-                src={logo}
-                alt="The Wolf Crest Real Estate"
-                sizes="(min-width: 1100px) 10vw, 110px"
-                className="h-auto w-full drop-shadow-[0_0_14px_rgba(255,255,255,0.18)]"
-              />
-            </Link>
+            <div className="flex w-full flex-col items-center gap-[clamp(1.25rem,3.5vh,2.25rem)]">
+              <SocialLinks baseDelay={1400} />
+              <span aria-hidden className="h-px w-[38%] bg-white/35" />
+              <Link href="/" className="block w-full px-[4%]">
+                <Image
+                  src={logo}
+                  alt="The Wolf Crest Real Estate"
+                  sizes="(min-width: 1100px) 10vw, 110px"
+                  className="h-auto w-full drop-shadow-[0_0_14px_rgba(255,255,255,0.18)]"
+                />
+              </Link>
+            </div>
           </aside>
 
           {/* Divider lines inset from top and bottom */}
