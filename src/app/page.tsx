@@ -12,7 +12,7 @@ const navItems = [
   { label: ["Service"], href: "/service" },
   { label: ["Our", "Partners"], href: "/partners" },
   { label: ["Media"], href: "/media" },
-  { label: ["Offices"], href: "#offices" },
+  { label: ["Offices"], href: "/offices" },
 ];
 
 function ArrowIcon() {
@@ -61,12 +61,12 @@ export default function Home() {
             style={delay(500)}
             className="hero-brighten relative z-10 flex w-[10%] min-w-[110px] flex-col items-center justify-between py-8"
           >
-            <a
-              href="#enquire"
+            <TransitionLink
+              href="/offices"
               className="mt-4 text-sm font-light uppercase tracking-wide md:text-base"
             >
               Enquire
-            </a>
+            </TransitionLink>
             <div className="flex w-full flex-col items-center gap-[clamp(1.25rem,3.5vh,2.25rem)]">
               <SocialLinks baseDelay={1400} />
               <span aria-hidden className="h-px w-[38%] bg-white/35" />
