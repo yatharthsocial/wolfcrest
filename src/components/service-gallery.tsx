@@ -375,7 +375,7 @@ export function ServiceGallery() {
                 <ArrowIcon className="h-3 w-auto shrink-0 transition-transform duration-500 group-hover:translate-x-1" />
               </button>
               <TransitionLink
-                href="/offices"
+                href="/dubai-property-connect"
                 className="group flex items-center gap-5 border-l border-white/20 px-[clamp(1.25rem,3vw,3rem)] text-sm uppercase tracking-[0.2em] transition-colors duration-500 hover:bg-white hover:text-background"
               >
                 Enquire

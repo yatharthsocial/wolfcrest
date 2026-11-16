@@ -6,7 +6,7 @@ import { TransitionLink } from "@/components/transition-link";
 import { contact, mapsLink } from "@/content/contact";
 
 export const metadata: Metadata = {
-  title: "Offices | The Wolf Crest",
+  title: "Dubai Property Connect | The Wolf Crest",
   description:
     "Visit The Wolf Crest Real Estate in Al Garhoud, Dubai, or reach us by phone, WhatsApp or email.",
 };
@@ -64,7 +64,7 @@ function Row({
   );
 }
 
-export default function OfficesPage() {
+export default function DubaiPropertyConnectPage() {
   const embed = `https://www.google.com/maps?q=${encodeURIComponent(contact.address.mapQuery)}&z=16&output=embed`;
 
   return (
@@ -87,9 +87,11 @@ export default function OfficesPage() {
       <div className="flex flex-wrap items-end justify-between gap-x-12 gap-y-6 px-[5vw] pb-[clamp(2rem,6vh,4rem)] pt-[clamp(2.5rem,9vh,6rem)]">
         <h1
           style={delay(300)}
-          className="hero-slide text-[clamp(4rem,13vw,13rem)] font-light uppercase leading-[0.8] tracking-[0.02em]"
+          className="hero-slide text-[clamp(2.75rem,8vw,9rem)] font-light uppercase leading-[0.88] tracking-[0.02em]"
         >
-          Offices
+          Dubai Property
+          <br />
+          Connect
         </h1>
         <p
           style={delay(900)}

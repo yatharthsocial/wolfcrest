@@ -1,5 +1,5 @@
 /**
- * Contact details and social profiles, used by the Offices page and the
+ * Contact details and social profiles, used by the Dubai Property Connect page and the
  * social icons on the home page. Change them here and the site updates.
  */
 

@@ -31,7 +31,7 @@ const icons: Record<SocialName, ReactNode> = {
 
 /**
  * Social icons. A vertical stack for the hero's left rail by default, or a
- * row (with names on larger screens) on the Offices page.
+ * row (with names on larger screens) on the Dubai Property Connect page.
  */
 export function SocialLinks({
   baseDelay = 0,

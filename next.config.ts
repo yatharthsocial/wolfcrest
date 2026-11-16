@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" },
     ],
   },
+  async redirects() {
+    return [
+      // The contact page was renamed from Offices
+      { source: "/offices", destination: "/dubai-property-connect", permanent: true },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

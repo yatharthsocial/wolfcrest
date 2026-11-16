@@ -115,7 +115,7 @@ export default function AboutPage() {
             The Wolf Crest Real Estate, Dubai
           </span>
           <TransitionLink
-            href="/offices"
+            href="/dubai-property-connect"
             className="group flex items-center gap-5 border-l border-white/25 px-[clamp(1.25rem,3vw,3rem)] text-sm uppercase tracking-[0.2em] transition-colors duration-500 hover:bg-white hover:text-[#5f5a55]"
           >
             Enquire

@@ -12,7 +12,7 @@ const navItems = [
   { label: ["Service"], href: "/service" },
   { label: ["Our", "Partners"], href: "/partners" },
   { label: ["Media"], href: "/media" },
-  { label: ["Offices"], href: "/offices" },
+  { label: ["Dubai", "Property", "Connect"], href: "/dubai-property-connect" },
 ];
 
 function ArrowIcon() {
@@ -62,7 +62,7 @@ export default function Home() {
             className="hero-brighten relative z-10 flex w-[10%] min-w-[110px] flex-col items-center justify-between py-8"
           >
             <TransitionLink
-              href="/offices"
+              href="/dubai-property-connect"
               className="mt-4 text-sm font-light uppercase tracking-wide md:text-base"
             >
               Enquire
