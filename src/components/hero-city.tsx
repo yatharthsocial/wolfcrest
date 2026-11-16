@@ -15,9 +15,9 @@ import mangalorePoster from "@/assets/hero-mangalore-poster.jpg";
 
 const cities = [
   { id: "dubai", label: "Dubai", video: "/videos/hero.mp4", poster: dubaiPoster, alt: "Sheikh Zayed Road, Dubai, from sunset into night", focus: "50% 50%" },
-  { id: "mangalore", label: "Mangalore", video: "/videos/hero-mangalore.mp4", poster: mangalorePoster, alt: "Mangaluru clock tower from day into night",
-    // 4:3 footage: anchor to the top so the clock tower is never cut off
-    focus: "50% 4%" },
+  { id: "mangalore", label: "Mangalore", video: "/videos/hero-mangalore.mp4", poster: mangalorePoster, alt: "Mangaluru coastline and breakwater from the air at sunset",
+    // Keep the sunset and the breakwater in frame on tall screens
+    focus: "45% 45%" },
 ] as const;
 
 type CityId = (typeof cities)[number]["id"];
