@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Jost } from "next/font/google";
+import { ContactDock } from "@/components/chat/contact-dock";
 import "./globals.css";
 
 const jost = Jost({
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${jost.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <ContactDock />
+      </body>
     </html>
   );
 }

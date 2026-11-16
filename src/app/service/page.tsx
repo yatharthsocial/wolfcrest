@@ -60,7 +60,7 @@ export default function ServicePage() {
         caption height (--cap) is reserved below the photo. Clicking a card
         opens its detail view (see ServiceGallery).
       */}
-      <section className="min-h-0 flex-1 px-[clamp(1.25rem,4vw,4.5rem)] py-[clamp(1.25rem,4.5vh,3.5rem)] [--cap:6.75rem] [--gap:clamp(1rem,2.2vw,2.75rem)] lg:[container-type:size]">
+      <section className="min-h-0 flex-1 px-[clamp(1.25rem,4vw,4.5rem)] lg:pr-[max(4vw,3.5rem)] py-[clamp(1.25rem,4.5vh,3.5rem)] [--cap:6.75rem] [--gap:clamp(1rem,2.2vw,2.75rem)] lg:[container-type:size]">
         <ServiceGallery />
       </section>
 

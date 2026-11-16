@@ -1,10 +1,9 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { HeroVideo } from "@/components/hero-video";
+import { CitySwitch, HeroBackdrop, HeroCityProvider } from "@/components/hero-city";
 import { SocialLinks } from "@/components/social-links";
 import { TransitionLink } from "@/components/transition-link";
-import hero from "@/assets/hero-poster.jpg";
 import logo from "@/assets/logowolf.png";
 
 const navItems = [
@@ -35,120 +34,114 @@ const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 export default function Home() {
   return (
     <main>
-      <section className="relative h-svh min-h-[560px] w-full overflow-hidden bg-background text-white">
-        {/* Background: still first frame, with the loop fading in over it */}
-        <div className="hero-settle absolute inset-0">
-          <Image
-            src={hero}
-            alt="Dubai skyline from sunset into night"
-            fill
-            preload
-            placeholder="blur"
-            sizes="100vw"
-            className="object-cover"
-          />
-          <HeroVideo />
-        </div>
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/50 to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/45 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/70 to-transparent" />
-        <div className="hero-dim absolute inset-0 bg-black" />
-
-        <div className="relative flex h-full">
-          {/* Left rail */}
-          <aside
-            style={delay(500)}
-            className="hero-brighten relative z-10 flex w-[10%] min-w-[110px] flex-col items-center justify-between py-8"
-          >
-            <TransitionLink
-              href="/dubai-property-connect"
-              className="mt-4 text-sm font-light uppercase tracking-wide md:text-base"
-            >
-              Enquire
-            </TransitionLink>
-            <div className="flex w-full flex-col items-center gap-[clamp(1.25rem,3.5vh,2.25rem)]">
-              <SocialLinks baseDelay={1400} />
-              <span aria-hidden className="h-px w-[38%] bg-white/35" />
-              <Link href="/" className="block w-full px-[4%]">
-                <Image
-                  src={logo}
-                  alt="The Wolf Crest Real Estate"
-                  sizes="(min-width: 1100px) 10vw, 110px"
-                  className="h-auto w-full drop-shadow-[0_0_14px_rgba(255,255,255,0.18)]"
-                />
-              </Link>
-            </div>
-          </aside>
-
-          {/* Divider lines inset from top and bottom */}
-          <div className="relative flex min-w-0 flex-1">
-            <div
-              style={delay(200)}
-              className="hero-line absolute inset-y-8 left-0 w-px bg-white/80"
-            />
-
-            {/* Title block */}
-            <div
-              style={delay(150)}
-              className="hero-slide w-[32%] min-w-0 shrink-0 pl-[3%] pt-8 max-md:w-full max-md:pl-4 max-md:pr-4"
-            >
-              <h1 className="text-[clamp(2.25rem,3.7vw,4rem)] font-light uppercase leading-none tracking-wide">
-                Wolfcrest
-              </h1>
-              <p className="mt-8 max-w-[420px] text-[clamp(1rem,1.55vw,1.4rem)] font-light leading-[1.05]">
-                Luxury Curated Residences For Long Term Living
-              </p>
-            </div>
-
-            {/* Nav columns */}
-            <nav className="flex flex-1 max-md:hidden">
-              {navItems.map((item, i) => (
-                <TransitionLink
-                  key={item.href}
-                  href={item.href}
-                  className="group relative flex min-w-0 flex-1 basis-0 items-end pb-8 pl-[1.1vw]"
-                >
-                  <span
-                    style={delay(600 + i * 140)}
-                    className="hero-line absolute inset-y-8 left-0 w-px bg-white/80"
-                  />
-                  <span className="relative text-[clamp(0.9rem,1.65vw,1.75rem)] font-light uppercase leading-[1.3] tracking-wide">
-                    <span className="nav-label block">
-                      {item.label.map((word, line) => (
-                        <span
-                          key={word}
-                          style={delay(1200 + i * 140 + line * 260)}
-                          className="hero-reveal"
-                        >
-                          <span className="hero-reveal-inner">{word}</span>
-                        </span>
-                      ))}
-                    </span>
-                    <span className="nav-arrow absolute bottom-[0.1em] left-0">
-                      <ArrowIcon />
-                    </span>
-                  </span>
-                </TransitionLink>
-              ))}
-            </nav>
+      <HeroCityProvider>
+        <section className="relative h-svh min-h-[560px] w-full overflow-hidden bg-background text-white">
+          {/* Background: the chosen city's video, cross-fading on switch */}
+          <div className="hero-settle absolute inset-0">
+            <HeroBackdrop />
           </div>
-        </div>
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-black/50 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/45 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/70 to-transparent" />
+          <div className="hero-dim absolute inset-0 bg-black" />
 
-        {/* Mobile nav */}
-        <nav className="absolute inset-x-0 bottom-8 flex flex-col gap-2 pl-[calc(max(10%,110px)+4%)] md:hidden">
-          {navItems.map((item, i) => (
-            <TransitionLink
-              key={item.href}
-              href={item.href}
-              style={delay(1200 + i * 140)}
-              className="hero-reveal text-lg font-light uppercase tracking-wide text-white/85"
+          <div className="relative flex h-full">
+            {/* Left rail */}
+            <aside
+              style={delay(500)}
+              className="hero-brighten relative z-10 flex w-[10%] min-w-[110px] flex-col items-center justify-between py-8"
             >
-              <span className="hero-reveal-inner">{item.label.join(" ")}</span>
-            </TransitionLink>
-          ))}
-        </nav>
-      </section>
+              <TransitionLink
+                href="/dubai-property-connect"
+                className="mt-4 text-sm font-light uppercase tracking-wide md:text-base"
+              >
+                Enquire
+              </TransitionLink>
+              <div className="flex w-full flex-col items-center gap-[clamp(1.25rem,3.5vh,2.25rem)]">
+                <SocialLinks baseDelay={1400} />
+                <span aria-hidden className="h-px w-[38%] bg-white/35" />
+                <Link href="/" className="block w-full px-[4%]">
+                  <Image
+                    src={logo}
+                    alt="The Wolf Crest Real Estate"
+                    sizes="(min-width: 1100px) 10vw, 110px"
+                    className="h-auto w-full drop-shadow-[0_0_14px_rgba(255,255,255,0.18)]"
+                  />
+                </Link>
+              </div>
+            </aside>
+
+            {/* Divider lines inset from top and bottom */}
+            <div className="relative flex min-w-0 flex-1">
+              <div
+                style={delay(200)}
+                className="hero-line absolute inset-y-8 left-0 w-px bg-white/80"
+              />
+
+              {/* Title block */}
+              <div
+                style={delay(150)}
+                className="hero-slide w-[32%] min-w-0 shrink-0 pl-[3%] pt-8 max-md:w-full max-md:pl-4 max-md:pr-4"
+              >
+                <h1 className="text-[clamp(2.25rem,3.7vw,4rem)] font-light uppercase leading-none tracking-wide">
+                  Wolfcrest
+                </h1>
+                <p className="mt-8 max-w-[420px] text-[clamp(1rem,1.55vw,1.4rem)] font-light leading-[1.05]">
+                  Luxury Curated Residences For Long Term Living
+                </p>
+                <CitySwitch style={delay(1500)} />
+              </div>
+
+              {/* Nav columns */}
+              <nav className="flex flex-1 max-md:hidden">
+                {navItems.map((item, i) => (
+                  <TransitionLink
+                    key={item.href}
+                    href={item.href}
+                    className="group relative flex min-w-0 flex-1 basis-0 items-end pb-8 pl-[1.1vw]"
+                  >
+                    <span
+                      style={delay(600 + i * 140)}
+                      className="hero-line absolute inset-y-8 left-0 w-px bg-white/80"
+                    />
+                    <span className="relative text-[clamp(0.9rem,1.65vw,1.75rem)] font-light uppercase leading-[1.3] tracking-wide">
+                      <span className="nav-label block">
+                        {item.label.map((word, line) => (
+                          <span
+                            key={word}
+                            style={delay(1200 + i * 140 + line * 260)}
+                            className="hero-reveal"
+                          >
+                            <span className="hero-reveal-inner">{word}</span>
+                          </span>
+                        ))}
+                      </span>
+                      <span className="nav-arrow absolute bottom-[0.1em] left-0">
+                        <ArrowIcon />
+                      </span>
+                    </span>
+                  </TransitionLink>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Mobile nav */}
+          <nav data-fab-avoid className="absolute inset-x-0 bottom-8 flex flex-col gap-2 pl-[calc(max(10%,110px)+4%)] md:hidden">
+            {navItems.map((item, i) => (
+              <TransitionLink
+                key={item.href}
+                href={item.href}
+                style={delay(1200 + i * 140)}
+                className="hero-reveal text-lg font-light uppercase tracking-wide text-white/85"
+              >
+                <span className="hero-reveal-inner">{item.label.join(" ")}</span>
+              </TransitionLink>
+            ))}
+          </nav>
+        </section>
+      </HeroCityProvider>
     </main>
   );
 }

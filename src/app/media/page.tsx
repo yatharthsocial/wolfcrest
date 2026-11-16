@@ -51,7 +51,7 @@ function Chapter({
   return (
     <section
       id={id}
-      className="scroll-mt-4 border-t border-white/25 px-[5vw] py-[clamp(3rem,10vh,7rem)]"
+      className="scroll-mt-4 border-t border-white/25 px-[5vw] lg:pr-[max(5vw,3.5rem)] py-[clamp(3rem,10vh,7rem)]"
     >
       <Reveal className="mb-[clamp(1.75rem,5vh,3.5rem)] flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
         <h2 className="text-[clamp(2.5rem,6vw,6.5rem)] font-light uppercase leading-[0.95] tracking-wide">

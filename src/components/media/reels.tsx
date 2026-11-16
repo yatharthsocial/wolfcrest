@@ -179,7 +179,7 @@ export function Reels({ items }: { items: Reel[] }) {
 
       <ul
         ref={strip}
-        className="-mx-[5vw] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-[5vw] px-[5vw] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="-mx-[5vw] flex snap-x lg:mr-0 lg:pr-0 snap-mandatory gap-6 overflow-x-auto scroll-px-[5vw] px-[5vw] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((reel, i) => (
           <li

@@ -103,7 +103,7 @@ export default function DubaiPropertyConnectPage() {
 
       <section
         id="contact"
-        className="grid grid-cols-1 gap-[clamp(2rem,4vw,4.5rem)] border-t border-white/25 px-[5vw] py-[clamp(2.5rem,8vh,6rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]"
+        className="grid grid-cols-1 gap-[clamp(2rem,4vw,4.5rem)] border-t border-white/25 px-[5vw] lg:pr-[max(5vw,3.5rem)] py-[clamp(2.5rem,8vh,6rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]"
       >
         <Reveal className="flex flex-col">
           <Row label="Visit" href={mapsLink} external>

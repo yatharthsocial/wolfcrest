@@ -62,7 +62,7 @@ export default function AboutPage() {
           </TransitionLink>
         </header>
 
-        <div className="flex flex-col gap-[clamp(1.25rem,4.5vh,3.5rem)] px-[clamp(1.25rem,4vw,4.5rem)] pb-[clamp(1.5rem,5.5vh,4.5rem)] pt-[clamp(1.5rem,6vh,5rem)]">
+        <div className="flex flex-col gap-[clamp(1.25rem,4.5vh,3.5rem)] px-[clamp(1.25rem,4vw,4.5rem)] lg:pr-[max(4vw,3.5rem)] pb-[clamp(1.5rem,5.5vh,4.5rem)] pt-[clamp(1.5rem,6vh,5rem)]">
           <h1
             style={delay(850)}
             className="fade-up max-w-[20ch] text-[clamp(2rem,min(4.6vw,7vh),5.75rem)] font-light leading-[1.06] tracking-[-0.01em]"

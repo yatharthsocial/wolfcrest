@@ -292,7 +292,7 @@ export function PartnersScroller() {
         </div>
 
         {/* Skip */}
-        <div className="absolute bottom-[clamp(4.25rem,9svh,6rem)] right-[5vw] max-lg:bottom-6 max-lg:right-5">
+        <div data-fab-avoid className="absolute bottom-[clamp(4.25rem,9svh,6rem)] right-[5vw] max-lg:bottom-6 max-lg:right-5">
           <button
             type="button"
             onClick={skip}
