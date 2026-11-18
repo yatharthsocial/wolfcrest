@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Metadata } from "next";
 import { Reveal } from "@/components/media/reveal";
+import { PosterBanner } from "@/components/poster-banner";
 import { SocialLinks } from "@/components/social-links";
 import { TransitionLink } from "@/components/transition-link";
 import { contact, mapsLink } from "@/content/contact";
@@ -100,6 +101,16 @@ export default function DubaiPropertyConnectPage() {
           Visit us in Al Garhoud, or reach us by phone, WhatsApp or email.
         </p>
       </div>
+
+      {/* Summit poster */}
+      <section
+        aria-label="Dubai Property Connect summit"
+        className="border-t border-white/25 px-[5vw] py-[clamp(2.5rem,8vh,6rem)] lg:pr-[max(5vw,3.5rem)]"
+      >
+        <Reveal>
+          <PosterBanner />
+        </Reveal>
+      </section>
 
       <section
         id="contact"

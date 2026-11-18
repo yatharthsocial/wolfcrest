@@ -138,11 +138,11 @@ export function CitySwitch({ style }: { style?: CSSProperties }) {
       role="group"
       aria-label="Show city"
       style={style}
-      className="fade-up relative mt-7 grid w-fit grid-cols-[1fr_1fr] rounded-full border border-white/35 bg-black/25 p-1 backdrop-blur-md"
+      className="fade-up relative mt-6 grid w-fit grid-cols-[1fr_1fr] items-center rounded-full border border-white/30 bg-black/25 p-[3px] backdrop-blur-md"
     >
       <span
         aria-hidden
-        className="absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-white transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        className="absolute inset-y-[3px] left-[3px] w-[calc(50%-3px)] rounded-full bg-white transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
         style={{ transform: `translateX(${index * 100}%)` }}
       />
       {cities.map((c) => {
@@ -153,11 +153,12 @@ export function CitySwitch({ style }: { style?: CSSProperties }) {
             type="button"
             aria-pressed={on}
             onClick={() => setCity(c.id)}
-            className={`relative z-10 cursor-pointer rounded-full px-[clamp(0.9rem,1.2vw,1.25rem)] py-1.5 text-[0.65rem] uppercase tracking-[0.22em] transition-colors duration-500 md:text-[0.7rem] ${
+            className={`relative z-10 flex cursor-pointer items-center justify-center rounded-full px-3 py-1 text-[0.55rem] leading-none uppercase tracking-[0.18em] transition-colors duration-500 md:px-3.5 md:text-[0.6rem] ${
               on ? "text-black" : "text-white/75 hover:text-white"
             }`}
           >
-            {c.label}
+            {/* Negative margin cancels the trailing letter-spacing so the label sits centred */}
+            <span className="-mr-[0.18em]">{c.label}</span>
           </button>
         );
       })}

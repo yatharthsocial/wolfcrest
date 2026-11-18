@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Jost } from "next/font/google";
 import { ContactDock } from "@/components/chat/contact-dock";
+import { PosterPopup } from "@/components/poster-popup";
 import "./globals.css";
 
 const jost = Jost({
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <ContactDock />
+        <PosterPopup />
       </body>
     </html>
   );
