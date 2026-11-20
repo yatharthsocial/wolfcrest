@@ -4,17 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import poster from "@/assets/poster-dubai-property-connect.png";
+import mobilePoster from "@/assets/poster-dubai-property-connect-mobile.png";
 import { BookingForm } from "./booking-form";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
 const POSTER_ALT =
   "Dubai Property Connect: Property & Investment Summit, 18 Dec 2026, 5 PM onwards, The Avatar, Mangaluru";
-/** The poster is landscape, so it only pops up on desktop-sized screens */
+/** Desktop gets the landscape poster, phones and tablets the portrait one */
 const DESKTOP = "(min-width: 1024px)";
 
 /** How long after landing before the poster appears */
 const DELAY_MS = 3_500;
+const MOBILE_DELAY_MS = 3_000;
 /** Matches the close transition below, so the popup unmounts after fading out */
 const CLOSE_MS = 700;
 /** Shown once per browser session so it doesn't reappear on every page */
@@ -45,6 +47,7 @@ export function PosterPopup() {
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [due, setDue] = useState(false);
+  const [mobile, setMobile] = useState(false);
   // "Book your slot" slides a booking form over the right of the poster
   const [booking, setBooking] = useState(false);
   // Keeps the form rendered while it slides back out
@@ -55,10 +58,13 @@ export function PosterPopup() {
     try {
       if (sessionStorage.getItem(SEEN_KEY)) return;
     } catch {}
-    if (!window.matchMedia(DESKTOP).matches) return;
+    const isMobile = !window.matchMedia(DESKTOP).matches;
     // Mount right after first paint so the poster starts loading straight away
-    const m = requestAnimationFrame(() => setMounted(true));
-    const t = window.setTimeout(() => setDue(true), DELAY_MS);
+    const m = requestAnimationFrame(() => {
+      setMobile(isMobile);
+      setMounted(true);
+    });
+    const t = window.setTimeout(() => setDue(true), isMobile ? MOBILE_DELAY_MS : DELAY_MS);
     return () => {
       cancelAnimationFrame(m);
       window.clearTimeout(t);
@@ -127,18 +133,20 @@ export function PosterPopup() {
           inert={booking}
           aria-hidden={booking}
           onClick={(e) => e.stopPropagation()}
-          className={`relative w-[min(92vw,1100px,calc(88svh*1.6))] overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.6)] [grid-area:1/1] ${SWAP} ${
+          className={`relative ${
+            mobile ? "w-[min(92vw,calc(86svh*0.54))]" : "w-[min(92vw,1100px,calc(88svh*1.6))]"
+          } overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.6)] [grid-area:1/1] ${SWAP} ${
             booking ? "pointer-events-none scale-[0.94] opacity-0 blur-[2px]" : "scale-100 opacity-100 blur-0 delay-150"
           }`}
         >
           <CloseButton onClick={close} />
 
           <Image
-            src={poster}
+            src={mobile ? mobilePoster : poster}
             alt={POSTER_ALT}
             preload
             onLoad={() => setLoaded(true)}
-            sizes="min(92vw, 1100px)"
+            sizes={mobile ? "92vw" : "min(92vw, 1100px)"}
             className="block h-auto w-full"
           />
 
@@ -146,7 +154,11 @@ export function PosterPopup() {
           <button
             type="button"
             onClick={openForm}
-            className={`${inter.className} absolute left-[4%] top-[75%] inline-flex h-[52px] cursor-pointer items-center gap-8 bg-[#F2C46D] px-6 text-[13px] font-bold uppercase tracking-[0.18em] text-[#0A0908] transition-colors hover:bg-[#F7D48E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C46D]`}
+            className={`${inter.className} absolute inline-flex cursor-pointer items-center bg-[#F2C46D] ${
+              mobile
+                ? "left-[5%] top-[77%] h-10 gap-4 px-4 text-[11px]"
+                : "left-[4%] top-[75%] h-[52px] gap-8 px-6 text-[13px]"
+            } font-bold uppercase tracking-[0.18em] text-[#0A0908] transition-colors hover:bg-[#F7D48E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C46D]`}
           >
             Book your slot
             <span aria-hidden className="text-lg leading-none tracking-normal">→</span>
@@ -158,7 +170,7 @@ export function PosterPopup() {
             inert={!booking}
             aria-hidden={!booking}
             onClick={(e) => e.stopPropagation()}
-            className={`${inter.className} relative max-h-[88svh] w-[min(92vw,30rem)] overflow-y-auto rounded-xl border border-white/15 bg-[#0A0908] px-10 pb-9 pt-8 shadow-[0_24px_80px_rgba(0,0,0,0.6)] [grid-area:1/1] ${SWAP} ${
+            className={`${inter.className} relative max-h-[88svh] w-[min(92vw,30rem)] overflow-y-auto rounded-xl border border-white/15 bg-[#0A0908] px-6 pb-8 pt-8 sm:px-10 sm:pb-9 shadow-[0_24px_80px_rgba(0,0,0,0.6)] [grid-area:1/1] ${SWAP} ${
               booking ? "translate-y-0 scale-100 opacity-100 delay-150" : "pointer-events-none translate-y-5 scale-[0.97] opacity-0"
             }`}
           >
