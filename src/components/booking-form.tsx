@@ -21,35 +21,66 @@ const ENTRY = {
 
 const GOLD = "#F2C46D";
 
+/**
+ * Mobile numbers per country, without the country code or a leading 0.
+ * The form asks for a WhatsApp number, so only mobile ranges are accepted.
+ * `max` caps typing; `pattern` is the full check; `example` is the placeholder.
+ */
 const countryCodes = [
-  { code: "+91", country: "India" },
-  { code: "+971", country: "UAE" },
-  { code: "+966", country: "Saudi Arabia" },
-  { code: "+974", country: "Qatar" },
-  { code: "+968", country: "Oman" },
-  { code: "+965", country: "Kuwait" },
-  { code: "+973", country: "Bahrain" },
-  { code: "+44", country: "UK" },
-  { code: "+1", country: "USA / Canada" },
-  { code: "+61", country: "Australia" },
-  { code: "+64", country: "New Zealand" },
-  { code: "+65", country: "Singapore" },
-  { code: "+60", country: "Malaysia" },
-  { code: "+49", country: "Germany" },
-  { code: "+33", country: "France" },
-  { code: "+353", country: "Ireland" },
-  { code: "+27", country: "South Africa" },
+  { code: "+91", country: "India", max: 10, pattern: /^[6-9]\d{9}$/, example: "98765 43210", rule: "10 digits starting with 6–9" },
+  { code: "+971", country: "UAE", max: 9, pattern: /^5[024568]\d{7}$/, example: "50 123 4567", rule: "9 digits starting with 5" },
+  { code: "+966", country: "Saudi Arabia", max: 9, pattern: /^5\d{8}$/, example: "51 234 5678", rule: "9 digits starting with 5" },
+  { code: "+974", country: "Qatar", max: 8, pattern: /^[3567]\d{7}$/, example: "3312 3456", rule: "8 digits starting with 3, 5, 6 or 7" },
+  { code: "+968", country: "Oman", max: 8, pattern: /^[79]\d{7}$/, example: "9212 3456", rule: "8 digits starting with 7 or 9" },
+  { code: "+965", country: "Kuwait", max: 8, pattern: /^[4569]\d{7}$/, example: "5001 2345", rule: "8 digits starting with 4, 5, 6 or 9" },
+  { code: "+973", country: "Bahrain", max: 8, pattern: /^[36]\d{7}$/, example: "3600 1234", rule: "8 digits starting with 3 or 6" },
+  { code: "+44", country: "UK", max: 10, pattern: /^7\d{9}$/, example: "7400 123456", rule: "10 digits starting with 7" },
+  { code: "+1", country: "USA / Canada", max: 10, pattern: /^[2-9]\d{2}[2-9]\d{6}$/, example: "201 555 0123", rule: "10 digits" },
+  { code: "+61", country: "Australia", max: 9, pattern: /^4\d{8}$/, example: "412 345 678", rule: "9 digits starting with 4" },
+  { code: "+64", country: "New Zealand", max: 10, pattern: /^2\d{7,9}$/, example: "21 123 4567", rule: "8–10 digits starting with 2" },
+  { code: "+65", country: "Singapore", max: 8, pattern: /^[89]\d{7}$/, example: "8123 4567", rule: "8 digits starting with 8 or 9" },
+  { code: "+60", country: "Malaysia", max: 10, pattern: /^1\d{8,9}$/, example: "12 345 6789", rule: "9–10 digits starting with 1" },
+  { code: "+49", country: "Germany", max: 11, pattern: /^1[567]\d{8,9}$/, example: "151 23456789", rule: "10–11 digits starting with 15, 16 or 17" },
+  { code: "+33", country: "France", max: 9, pattern: /^[67]\d{8}$/, example: "6 12 34 56 78", rule: "9 digits starting with 6 or 7" },
+  { code: "+353", country: "Ireland", max: 9, pattern: /^8[3-9]\d{7}$/, example: "85 012 3456", rule: "9 digits starting with 83–89" },
+  { code: "+27", country: "South Africa", max: 9, pattern: /^[678]\d{8}$/, example: "71 123 4567", rule: "9 digits starting with 6, 7 or 8" },
 ];
+
+type Country = (typeof countryCodes)[number];
+
+const findCountry = (code: string) => countryCodes.find((c) => c.code === code) ?? countryCodes[0];
+
+/**
+ * Keeps only digits. A pasted number in international form (+91…, 0091…)
+ * loses its country code, and a leading trunk 0 (098…) is dropped.
+ * Length is checked by the caller.
+ */
+function cleanPhone(value: string, country: Country) {
+  const international = /^\s*(\+|00)/.test(value);
+  let digits = value.replace(/\D/g, "");
+  if (international) {
+    if (digits.startsWith("00")) digits = digits.slice(2);
+    const cc = country.code.slice(1);
+    if (digits.startsWith(cc)) digits = digits.slice(cc.length);
+  }
+  return digits.replace(/^0+/, "");
+}
 
 type Status = "idle" | "sending" | "sent" | "error";
 type Errors = { name?: string; phone?: string };
 
-function validate(name: string, phone: string): Errors {
+function validatePhone(phone: string, country: Country) {
+  if (!phone) return "Please enter your phone number";
+  if (!country.pattern.test(phone))
+    return `Enter a valid ${country.country} mobile number (${country.rule})`;
+  return undefined;
+}
+
+function validate(name: string, phone: string, country: Country): Errors {
   const errors: Errors = {};
   if (name.trim().length < 2) errors.name = "Please enter your name";
-  const digits = phone.replace(/\D/g, "");
-  if (!digits) errors.phone = "Please enter your phone number";
-  else if (digits.length < 6 || digits.length > 14) errors.phone = "Please enter a valid phone number";
+  const phoneError = validatePhone(phone, country);
+  if (phoneError) errors.phone = phoneError;
   return errors;
 }
 
@@ -66,6 +97,7 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
   const nameInput = useRef<HTMLInputElement>(null);
+  const country = findCountry(code);
 
   // Focus once the card has faded in (it can't take focus while still inert)
   useEffect(() => {
@@ -75,11 +107,11 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
 
   async function submit(e: FormEvent) {
     e.preventDefault();
-    const found = validate(name, phone);
+    const found = validate(name, phone, country);
     setErrors(found);
     if (found.name || found.phone) return;
 
-    const number = `${code} ${phone.trim()}`;
+    const number = `${code} ${phone}`;
     const note = comment.trim();
     const body = new URLSearchParams();
     body.set(ENTRY.name, name.trim());
@@ -111,7 +143,7 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
         </span>
         <h2 className="text-2xl font-bold tracking-tight text-white">Your slot is requested</h2>
         <p className="mt-3 text-[15px] leading-relaxed text-white/65">
-          Thank you, {name.trim().split(/\s+/)[0]}. Our team will reach out on {code} {phone.trim()} to confirm
+          Thank you, {name.trim().split(/\s+/)[0]}. Our team will reach out on {code} {phone} to confirm
           your slot for 18 Dec at The Avatar, Mangaluru.
         </p>
         <button
@@ -185,7 +217,12 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
                 aria-label="Country code"
                 autoComplete="tel-country-code"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={(e) => {
+                  const next = findCountry(e.target.value);
+                  setCode(next.code);
+                  // Re-check what's typed against the new country's rules
+                  if (phone) setErrors((er) => ({ ...er, phone: validatePhone(phone, next) }));
+                }}
                 className="absolute inset-0 cursor-pointer appearance-none bg-[#141210] text-[15px] text-white opacity-0"
               >
                 {countryCodes.map((c) => (
@@ -199,14 +236,27 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
               id="book-phone"
               name="phone"
               type="tel"
-              inputMode="tel"
+              inputMode="numeric"
+              pattern="[0-9]*"
               autoComplete="tel-national"
               required
+              maxLength={country.max + 8 /* room for a pasted +code, cleaned on change */}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => {
+                const next = cleanPhone(e.target.value, country);
+                // Typing stops at the country's length. A longer paste is kept
+                // as is so it's flagged rather than silently cut to a wrong number
+                if (next.length > country.max && next.length - phone.length <= 1) return;
+                setPhone(next);
+                // Once an error is showing, clear it as soon as the number is valid
+                if (errors.phone) setErrors((er) => ({ ...er, phone: validatePhone(next, country) }));
+              }}
+              onBlur={() => {
+                if (phone) setErrors((er) => ({ ...er, phone: validatePhone(phone, country) }));
+              }}
               aria-invalid={!!errors.phone}
               aria-describedby={errors.phone ? "book-phone-error" : undefined}
-              placeholder="98765 43210"
+              placeholder={country.example.replace(/\s/g, "")}
               className={`${field} h-12 w-full min-w-0 flex-1`}
             />
           </div>
