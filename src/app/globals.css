@@ -100,6 +100,23 @@ body {
   will-change: transform;
 }
 
+/* Horizontal rules draw in from the left (mobile hero) */
+@keyframes hero-line-x {
+  from {
+    transform: scale3d(0, 1, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.hero-line-x {
+  animation: hero-line-x 1400ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation-delay: var(--delay, 0ms);
+  transform-origin: left;
+  will-change: transform;
+}
+
 /* Text lines are revealed left to right: the outer box slides in from the
    left while the text inside slides back the same amount, so the text stays
    still and its visible edge sweeps across it */
@@ -379,6 +396,7 @@ html:has(main[data-smooth-scroll]) {
   .hero-slide,
   .hero-brighten,
   .hero-line,
+  .hero-line-x,
   .hero-reveal,
   .hero-reveal-inner,
   .dock-in,

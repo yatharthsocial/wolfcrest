@@ -153,7 +153,7 @@ export function CitySwitch({ style }: { style?: CSSProperties }) {
             type="button"
             aria-pressed={on}
             onClick={() => setCity(c.id)}
-            className={`relative z-10 flex cursor-pointer items-center justify-center rounded-full px-3 py-1 text-[0.55rem] leading-none uppercase tracking-[0.18em] transition-colors duration-500 md:px-3.5 md:text-[0.6rem] ${
+            className={`relative z-10 flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-[0.62rem] leading-none uppercase tracking-[0.18em] transition-colors duration-500 md:px-3.5 md:py-1 md:text-[0.6rem] ${
               on ? "text-black" : "text-white/75 hover:text-white"
             }`}
           >
