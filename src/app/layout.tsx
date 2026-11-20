@@ -11,7 +11,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Wolfcrest",
+  title: "The Wolf Crest",
   description: "Luxury curated residences for long term living",
 };
 

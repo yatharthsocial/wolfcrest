@@ -52,7 +52,9 @@ export default function AboutPage() {
           style={delay(700)}
           className="fade-up flex items-center justify-between gap-6 border-b border-white/25 px-[clamp(1.25rem,4vw,4.5rem)] py-[clamp(1rem,2.6vh,1.75rem)] text-xs uppercase tracking-[0.22em] text-white/75"
         >
-          <span>About The Wolf Crest</span>
+          <TransitionLink href="/" className="transition-colors duration-500 hover:text-white">
+            About The Wolf Crest
+          </TransitionLink>
           <TransitionLink
             href="/"
             className="group flex items-center gap-2 transition-colors duration-500 hover:text-white"

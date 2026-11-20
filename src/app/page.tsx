@@ -7,7 +7,7 @@ import { TransitionLink } from "@/components/transition-link";
 import logo from "@/assets/realestate-logo-crop.jpg";
 
 const navItems = [
-  { label: ["About", "Wolfcrest"], href: "/about" },
+  { label: ["About", "The Wolf", "Crest"], href: "/about" },
   { label: ["Service"], href: "/service" },
   { label: ["Our", "Partners"], href: "/partners" },
   { label: ["Media"], href: "/media" },
@@ -85,7 +85,7 @@ export default function Home() {
                 className="hero-slide w-[32%] min-w-0 shrink-0 pl-[3%] pt-8 max-md:w-full max-md:pl-4 max-md:pr-4"
               >
                 <h1 className="text-[clamp(2.25rem,3.7vw,4rem)] font-light uppercase leading-none tracking-wide">
-                  Wolfcrest
+                  The Wolf Crest
                 </h1>
                 <p className="mt-8 max-w-[420px] text-[clamp(1rem,1.55vw,1.4rem)] font-light leading-[1.05]">
                   Luxury Curated Residences For Long Term Living
