@@ -42,9 +42,28 @@ export function ContactDock() {
       const right = r.right + GAP;
       const baseTop = r.top + current;
       const baseBottom = r.bottom + current;
+      const vh = window.innerHeight;
       const blockers = [...document.querySelectorAll<HTMLElement>("footer, [data-fab-avoid]")]
-        .map((b) => b.getBoundingClientRect())
-        .filter((b) => b.width > 0 && b.height > 0 && b.left < right && b.right > left);
+        .map((b) => {
+          const rect = b.getBoundingClientRect();
+          if (b.tagName !== "FOOTER") return rect;
+          // Footers scroll in from the bottom. Chasing them frame by frame
+          // makes the buttons judder on phones, so once a footer is on screen
+          // clear the spot it will come to rest in, in one smooth move.
+          if (rect.top >= vh || rect.bottom <= 0) return null;
+          return {
+            left: rect.left,
+            right: rect.right,
+            width: rect.width,
+            height: rect.height,
+            top: Math.min(rect.top, vh - rect.height),
+            bottom: Math.max(rect.bottom, vh),
+          };
+        })
+        .filter(
+          (b): b is Pick<DOMRect, "left" | "right" | "top" | "bottom" | "width" | "height"> =>
+            !!b && b.width > 0 && b.height > 0 && b.left < right && b.right > left,
+        );
 
       let next = 0;
       // A few passes, in case lifting above one thing lands on another

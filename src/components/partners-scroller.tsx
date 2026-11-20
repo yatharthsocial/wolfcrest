@@ -226,10 +226,10 @@ export function PartnersScroller() {
         Layout measured from the reference: portraits 18vw across, the faded
         column centred at 15vw, the partner column at 39vw, the name at 55vw.
       */}
-      <div className="sticky top-0 h-svh overflow-hidden [--d:min(18vw,33svh)] [--step:calc(var(--d)*1.37)] max-lg:[--d:min(40vw,30svh)]">
+      <div className="sticky top-0 h-svh overflow-hidden [--d:min(18vw,33svh)] [--step:calc(var(--d)*1.37)] max-lg:[--d:min(54vw,30svh)]">
         <div aria-hidden>
           {/* Faded column: moves down while the page scrolls */}
-          <div className="absolute top-1/2 left-[calc(15vw-var(--d)/2)] w-[var(--d)] max-lg:left-[calc(26vw-var(--d)/2)] max-lg:top-[38%]">
+          <div className="absolute top-1/2 left-[calc(15vw-var(--d)/2)] w-[var(--d)] max-lg:hidden">
             <div ref={backRef} className="relative will-change-transform">
               {backdrop.map((p, j) => (
                 <div
@@ -250,7 +250,7 @@ export function PartnersScroller() {
           </div>
 
           {/* Partner column: moves up, the one in the middle is highlighted */}
-          <div className="absolute top-1/2 left-[calc(39vw-var(--d)/2)] w-[var(--d)] max-lg:left-[calc(72vw-var(--d)/2)] max-lg:top-[38%]">
+          <div className="absolute top-1/2 left-[calc(39vw-var(--d)/2)] w-[var(--d)] max-lg:left-[calc(50vw-var(--d)/2)] max-lg:top-[38%]">
             <div ref={mainRef} className="relative will-change-transform">
               {partners.map((p, i) => (
                 <div
@@ -275,16 +275,16 @@ export function PartnersScroller() {
         </div>
 
         {/* Name and role, level with the highlighted portrait */}
-        <div className="absolute left-[55vw] right-[5vw] top-1/2 -translate-y-1/2 max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:translate-y-0 max-lg:bg-gradient-to-t max-lg:from-background max-lg:via-background/90 max-lg:to-transparent max-lg:px-5 max-lg:pb-28 max-lg:pt-16">
+        <div className="absolute left-[55vw] right-[5vw] top-1/2 -translate-y-1/2 max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:translate-y-0 max-lg:bg-gradient-to-t max-lg:from-background max-lg:via-background/90 max-lg:to-transparent max-lg:pl-6 max-lg:pr-20 max-lg:pb-16 max-lg:pt-20">
           <div key={active} aria-live="polite">
-            <h2 className="text-[clamp(2.5rem,5.6vw,7.5rem)] font-medium leading-[1.05] tracking-[-0.01em]">
+            <h2 className="text-[clamp(2rem,5.6vw,7.5rem)] font-medium leading-[1.05] tracking-[-0.01em]">
               <span className="hero-reveal">
                 <span className="hero-reveal-inner">{partner.name}</span>
               </span>
             </h2>
             <p
               style={{ "--delay": "150ms" } as CSSProperties}
-              className="fade-up mt-[clamp(0.75rem,2.6vh,2rem)] text-[clamp(1.1rem,2.1vw,2.6rem)] font-light leading-tight text-white/75"
+              className="fade-up mt-[clamp(0.75rem,2.6vh,2rem)] text-[clamp(1rem,2.1vw,2.6rem)] font-light leading-tight text-white/75"
             >
               {partner.role}
             </p>
@@ -292,7 +292,7 @@ export function PartnersScroller() {
         </div>
 
         {/* Skip */}
-        <div data-fab-avoid className="absolute bottom-[clamp(4.25rem,9svh,6rem)] right-[5vw] max-lg:bottom-6 max-lg:right-5">
+        <div className="absolute bottom-[clamp(4.25rem,9svh,6rem)] right-[5vw] max-lg:bottom-[max(1.5rem,env(safe-area-inset-bottom))] max-lg:left-6 max-lg:right-auto">
           <button
             type="button"
             onClick={skip}
