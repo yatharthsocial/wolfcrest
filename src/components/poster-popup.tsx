@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import poster from "@/assets/poster-dubai-property-connect.png";
-import mobilePoster from "@/assets/poster-dubai-property-connect-mobile.png";
+import mobilePoster from "@/assets/poster-dubai-property-connect-mobile-landscape.png";
 import { BookingForm } from "./booking-form";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
@@ -134,7 +134,8 @@ export function PosterPopup() {
           aria-hidden={booking}
           onClick={(e) => e.stopPropagation()}
           className={`relative ${
-            mobile ? "w-[min(92vw,calc(86svh*0.54))]" : "w-[min(92vw,1100px,calc(88svh*1.6))]"
+            // Both posters are landscape (1.6:1); on mobile leave room for the button bar below
+            mobile ? "w-[min(92vw,calc((86svh-3rem)*1.6))]" : "w-[min(92vw,1100px,calc(88svh*1.6))]"
           } overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.6)] [grid-area:1/1] ${SWAP} ${
             booking ? "pointer-events-none scale-[0.94] opacity-0 blur-[2px]" : "scale-100 opacity-100 blur-0 delay-150"
           }`}
@@ -150,14 +151,15 @@ export function PosterPopup() {
             className="block h-auto w-full"
           />
 
-          {/* Sits in the empty space under the date, on the poster's left margin */}
+          {/* Desktop: sits in the empty space under the date, on the poster's left margin.
+              Mobile: the landscape poster is too small for that, so it's a full-width bar below it */}
           <button
             type="button"
             onClick={openForm}
-            className={`${inter.className} absolute inline-flex cursor-pointer items-center bg-[#F2C46D] ${
+            className={`${inter.className} flex cursor-pointer items-center bg-[#F2C46D] ${
               mobile
-                ? "left-[5%] top-[77%] h-10 gap-4 px-4 text-[11px]"
-                : "left-[4%] top-[75%] h-[52px] gap-8 px-6 text-[13px]"
+                ? "h-12 w-full justify-center gap-4 text-xs"
+                : "absolute left-[4%] top-[75%] h-[52px] gap-8 px-6 text-[13px]"
             } font-bold uppercase tracking-[0.18em] text-[#0A0908] transition-colors hover:bg-[#F7D48E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C46D]`}
           >
             Book your slot
