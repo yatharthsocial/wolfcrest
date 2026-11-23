@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CitySwitch, HeroBackdrop, HeroCityProvider } from "@/components/hero-city";
 import { SocialLinks } from "@/components/social-links";
 import { TransitionLink } from "@/components/transition-link";
-import logo from "@/assets/realestate-logo-crop.jpg";
+import logo from "@/assets/logo-wolfcrest.png";
 
 const navItems = [
   { label: ["About", "The Wolf", "Crest"], href: "/about" },
@@ -66,7 +66,7 @@ export default function Home() {
                     src={logo}
                     alt="The Wolf Crest Real Estate"
                     sizes="(min-width: 1100px) 10vw, 110px"
-                    className="h-auto w-full mix-blend-screen"
+                    className="h-auto w-full"
                   />
                 </Link>
               </div>

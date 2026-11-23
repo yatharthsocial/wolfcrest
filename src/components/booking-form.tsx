@@ -1,99 +1,38 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-
-/**
- * Entries go straight into the Dubai Property Connect Google Form, so they
- * show up in its Responses tab (and linked sheet) like any other response.
- */
-const FORM_ACTION =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdXS9TO_oOKfVMosMoBGOjMBxwFUpVbSrSnVpxx6WvZogoNmw/formResponse";
-const ENTRY = {
-  name: "entry.1409889583", // "1. Full Name"
-  phone: "entry.865948833", // "2. WhatsApp Number"
-  /**
-   * The Google Form has no comment question yet. Add a "Comment" paragraph
-   * question to it and put its entry id here (e.g. "entry.123456789").
-   * Until then, a comment is added after the number so it isn't lost.
-   */
-  comment: null as string | null,
-};
+import {
+  COMMENT_MAX,
+  NAME_MAX,
+  cleanName,
+  cleanPhone,
+  countryCodes,
+  findCountry,
+  validate,
+  validatePhone,
+  type BookingRequest,
+  type Errors,
+} from "@/lib/booking";
 
 const GOLD = "#F2C46D";
 
-/**
- * Mobile numbers per country, without the country code or a leading 0.
- * The form asks for a WhatsApp number, so only mobile ranges are accepted.
- * `max` caps typing; `pattern` is the full check; `example` is the placeholder.
- */
-const countryCodes = [
-  { code: "+91", country: "India", max: 10, pattern: /^[6-9]\d{9}$/, example: "98765 43210", rule: "10 digits starting with 6–9" },
-  { code: "+971", country: "UAE", max: 9, pattern: /^5[024568]\d{7}$/, example: "50 123 4567", rule: "9 digits starting with 5" },
-  { code: "+966", country: "Saudi Arabia", max: 9, pattern: /^5\d{8}$/, example: "51 234 5678", rule: "9 digits starting with 5" },
-  { code: "+974", country: "Qatar", max: 8, pattern: /^[3567]\d{7}$/, example: "3312 3456", rule: "8 digits starting with 3, 5, 6 or 7" },
-  { code: "+968", country: "Oman", max: 8, pattern: /^[79]\d{7}$/, example: "9212 3456", rule: "8 digits starting with 7 or 9" },
-  { code: "+965", country: "Kuwait", max: 8, pattern: /^[4569]\d{7}$/, example: "5001 2345", rule: "8 digits starting with 4, 5, 6 or 9" },
-  { code: "+973", country: "Bahrain", max: 8, pattern: /^[36]\d{7}$/, example: "3600 1234", rule: "8 digits starting with 3 or 6" },
-  { code: "+44", country: "UK", max: 10, pattern: /^7\d{9}$/, example: "7400 123456", rule: "10 digits starting with 7" },
-  { code: "+1", country: "USA / Canada", max: 10, pattern: /^[2-9]\d{2}[2-9]\d{6}$/, example: "201 555 0123", rule: "10 digits" },
-  { code: "+61", country: "Australia", max: 9, pattern: /^4\d{8}$/, example: "412 345 678", rule: "9 digits starting with 4" },
-  { code: "+64", country: "New Zealand", max: 10, pattern: /^2\d{7,9}$/, example: "21 123 4567", rule: "8–10 digits starting with 2" },
-  { code: "+65", country: "Singapore", max: 8, pattern: /^[89]\d{7}$/, example: "8123 4567", rule: "8 digits starting with 8 or 9" },
-  { code: "+60", country: "Malaysia", max: 10, pattern: /^1\d{8,9}$/, example: "12 345 6789", rule: "9–10 digits starting with 1" },
-  { code: "+49", country: "Germany", max: 11, pattern: /^1[567]\d{8,9}$/, example: "151 23456789", rule: "10–11 digits starting with 15, 16 or 17" },
-  { code: "+33", country: "France", max: 9, pattern: /^[67]\d{8}$/, example: "6 12 34 56 78", rule: "9 digits starting with 6 or 7" },
-  { code: "+353", country: "Ireland", max: 9, pattern: /^8[3-9]\d{7}$/, example: "85 012 3456", rule: "9 digits starting with 83–89" },
-  { code: "+27", country: "South Africa", max: 9, pattern: /^[678]\d{8}$/, example: "71 123 4567", rule: "9 digits starting with 6, 7 or 8" },
-];
-
-type Country = (typeof countryCodes)[number];
-
-const findCountry = (code: string) => countryCodes.find((c) => c.code === code) ?? countryCodes[0];
-
-/**
- * Keeps only digits. A pasted number in international form (+91…, 0091…)
- * loses its country code, and a leading trunk 0 (098…) is dropped.
- * Length is checked by the caller.
- */
-function cleanPhone(value: string, country: Country) {
-  const international = /^\s*(\+|00)/.test(value);
-  let digits = value.replace(/\D/g, "");
-  if (international) {
-    if (digits.startsWith("00")) digits = digits.slice(2);
-    const cc = country.code.slice(1);
-    if (digits.startsWith(cc)) digits = digits.slice(cc.length);
-  }
-  return digits.replace(/^0+/, "");
-}
-
 type Status = "idle" | "sending" | "sent" | "error";
-type Errors = { name?: string; phone?: string };
-
-function validatePhone(phone: string, country: Country) {
-  if (!phone) return "Please enter your phone number";
-  if (!country.pattern.test(phone))
-    return `Enter a valid ${country.country} mobile number (${country.rule})`;
-  return undefined;
-}
-
-function validate(name: string, phone: string, country: Country): Errors {
-  const errors: Errors = {};
-  if (name.trim().length < 2) errors.name = "Please enter your name";
-  const phoneError = validatePhone(phone, country);
-  if (phoneError) errors.phone = phoneError;
-  return errors;
-}
 
 const label = "mb-2 block text-[11px] font-bold uppercase tracking-[0.18em] text-white/60";
 const field =
   "rounded-none border border-white/20 bg-white/[0.04] px-4 text-[15px] text-white placeholder:text-white/30 outline-none transition-colors focus:border-[#F2C46D] aria-invalid:border-red-400/80";
 
-/** onBack shows a "Back to poster" link; leave it out where there is no poster to go back to */
+/**
+ * Bookings are posted to /api/book, which checks them again and adds a row to
+ * the bookings Google Sheet. onBack shows a "Back to poster" link; leave it
+ * out where there is no poster to go back to.
+ */
 export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: () => void }) {
   const [name, setName] = useState("");
   const [code, setCode] = useState(countryCodes[0].code);
   const [phone, setPhone] = useState("");
   const [comment, setComment] = useState("");
+  const [website, setWebsite] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
   const nameInput = useRef<HTMLInputElement>(null);
@@ -107,27 +46,27 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
 
   async function submit(e: FormEvent) {
     e.preventDefault();
+    if (status === "sending") return;
     const found = validate(name, phone, country);
     setErrors(found);
     if (found.name || found.phone) return;
 
-    const number = `${code} ${phone}`;
-    const note = comment.trim();
-    const body = new URLSearchParams();
-    body.set(ENTRY.name, name.trim());
-    if (ENTRY.comment) {
-      body.set(ENTRY.phone, number);
-      if (note) body.set(ENTRY.comment, note);
-    } else {
-      body.set(ENTRY.phone, note ? `${number} | Comment: ${note}` : number);
-    }
-
+    const booking: BookingRequest = { name: name.trim(), code, phone, comment: comment.trim(), website };
     setStatus("sending");
     try {
-      // Google Forms doesn't allow reading the reply from another site, so a
-      // request that goes through is treated as sent
-      await fetch(FORM_ACTION, { method: "POST", mode: "no-cors", body });
-      setStatus("sent");
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(booking),
+      });
+      if (res.ok) return setStatus("sent");
+      // The server re-checks; show its field errors if it disagrees with the form
+      const data = (await res.json().catch(() => null)) as { errors?: Errors } | null;
+      if (data?.errors) {
+        setErrors(data.errors);
+        return setStatus("idle");
+      }
+      setStatus("error");
     } catch {
       setStatus("error");
     }
@@ -188,8 +127,9 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
             name="name"
             autoComplete="name"
             required
+            maxLength={NAME_MAX}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName(cleanName(e.target.value))}
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? "book-name-error" : undefined}
             placeholder="Your full name"
@@ -275,6 +215,7 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
             id="book-comment"
             name="comment"
             rows={2}
+            maxLength={COMMENT_MAX}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Anything you'd like us to know"
@@ -283,16 +224,28 @@ export function BookingForm({ onBack, onDone }: { onBack?: () => void; onDone: (
         </div>
       </div>
 
+      {/* Honeypot: hidden from people and screen readers, filled in by bots */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        className="absolute -left-[9999px] h-px w-px opacity-0"
+      />
+
       {status === "error" && (
         <p role="alert" className="mt-4 text-[13px] text-red-300">
-          Couldn&apos;t send just now. Please check your connection and try again.
+          Couldn&apos;t send just now. Please try again in a moment.
         </p>
       )}
 
       <button
         type="submit"
         disabled={status === "sending"}
-        className="mt-6 inline-flex h-[52px] w-full cursor-pointer items-center justify-between bg-[#F2C46D] px-6 text-[13px] font-bold uppercase tracking-[0.18em] text-[#0A0908] transition-colors hover:bg-[#F7D48E] disabled:cursor-wait disabled:opacity-70"
+        className="mt-6 inline-flex h-[52px] w-full cursor-pointer items-center justify-center gap-4 bg-[#F2C46D] px-6 text-[13px] font-bold uppercase tracking-[0.18em] text-[#0A0908] transition-colors hover:bg-[#F7D48E] disabled:cursor-wait disabled:opacity-70"
       >
         {status === "sending" ? "Sending…" : "Book your slot"}
         <span aria-hidden className="text-lg leading-none tracking-normal">→</span>
