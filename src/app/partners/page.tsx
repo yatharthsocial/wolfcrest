@@ -1,12 +1,16 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
 import { PartnersScroller } from "@/components/partners-scroller";
 import { TransitionLink } from "@/components/transition-link";
 
-export const metadata: Metadata = {
-  title: "Our Partners | The Wolf Crest",
-  description: "The people behind The Wolf Crest Real Estate, Dubai.",
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/partners",
+  title: "Developer Partners: Emaar, DAMAC, Sobha, Nakheel & More",
+  description:
+    "The Wolf Crest Real Estate works with Dubai’s leading developers, including Emaar Properties, DAMAC, Sobha Realty, Nakheel, Meraas, Danube, Binghatti, Ellington, Azizi, Omniyat and more.",
+});
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
@@ -28,6 +32,7 @@ function ArrowIcon({ className }: { className: string }) {
 export default function PartnersPage() {
   return (
     <main className="relative w-full bg-background text-white">
+      <JsonLd data={breadcrumbJsonLd("/partners", "Our Partners")} />
       <header
         style={delay(500)}
         className="fade-up flex items-center justify-between gap-6 border-b border-white/25 px-[5vw] py-[clamp(1rem,2.6vh,1.75rem)] text-xs uppercase tracking-[0.22em] text-white/75"

@@ -1,5 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Metadata } from "next";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
 import { Gallery } from "@/components/media/gallery";
 import { Interviews } from "@/components/media/interviews";
 import { Reels } from "@/components/media/reels";
@@ -7,11 +9,12 @@ import { Reveal } from "@/components/media/reveal";
 import { TransitionLink } from "@/components/transition-link";
 import { interviews, photos, reels } from "@/content/media";
 
-export const metadata: Metadata = {
-  title: "Media | The Wolf Crest",
+export const metadata: Metadata = pageMetadata({
+  path: "/media",
+  title: "Media: Interviews & Reels",
   description:
-    "Interviews, reels and moments from The Wolf Crest Real Estate, Dubai.",
-};
+    "Interviews, reels and conversations from The Wolf Crest Real Estate on Dubai’s property market, new launches and life in the city.",
+});
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -69,6 +72,7 @@ function Chapter({
 export default function MediaPage() {
   return (
     <main data-smooth-scroll className="relative w-full bg-background text-white">
+      <JsonLd data={breadcrumbJsonLd("/media", "Media")} />
       <header
         style={delay(500)}
         className="fade-up flex items-center justify-between gap-6 border-b border-white/25 px-[5vw] py-[clamp(1rem,2.6vh,1.75rem)] text-xs uppercase tracking-[0.22em] text-white/75"

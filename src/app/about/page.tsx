@@ -1,13 +1,16 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
 import { AboutVideo } from "@/components/about-video";
 import { TransitionLink } from "@/components/transition-link";
 
-export const metadata: Metadata = {
-  title: "About | The Wolf Crest",
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
+  title: "About Us",
   description:
-    "The Wolf Crest Real Estate: property advisory in the UAE built on strategy, instinct and integrity.",
-};
+    "The Wolf Crest Real Estate is a Dubai property advisory guiding clients through the UAE real estate market with strategy, instinct and integrity. Founded by Godwin Dsouza (Founder & CEO) and Pooja Preetham (Co-founder).",
+});
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
@@ -35,6 +38,7 @@ function ArrowIcon({ className = "h-5 w-auto" }: { className?: string }) {
 export default function AboutPage() {
   return (
     <main className="relative flex h-svh min-h-[640px] w-full overflow-hidden bg-background text-white max-md:h-auto max-md:flex-col">
+      <JsonLd data={breadcrumbJsonLd("/about", "About")} />
       {/* Left: portrait video at its natural 9:16 */}
       <section
         style={delay(300)}

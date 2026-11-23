@@ -1,13 +1,16 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import { breadcrumbJsonLd, servicesJsonLd, pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
 import { ServiceGallery } from "@/components/service-gallery";
 import { TransitionLink } from "@/components/transition-link";
 
-export const metadata: Metadata = {
-  title: "Service | The Wolf Crest",
+export const metadata: Metadata = pageMetadata({
+  path: "/service",
+  title: "Services: Luxury Sales, Leasing, Off-Plan & Investment Advisory in Dubai",
   description:
-    "Luxury residential sales and leasing, off-plan developments, investment advisory and end-to-end client representation in Dubai.",
-};
+    "Luxury residential sales and leasing, off-plan and new developments, investment advisory and end-to-end client representation in Dubai, from valuation and due diligence to DLD transfer and handover.",
+});
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
@@ -29,6 +32,7 @@ function ArrowIcon({ className }: { className: string }) {
 export default function ServicePage() {
   return (
     <main className="relative flex h-svh min-h-[640px] w-full flex-col overflow-hidden bg-background text-white max-lg:h-auto">
+      <JsonLd data={[breadcrumbJsonLd("/service", "Services"), ...servicesJsonLd()]} />
       <header className="flex items-end justify-between gap-[clamp(1.5rem,4vw,5rem)] border-b border-white/25 px-[clamp(1.25rem,4vw,4.5rem)] pb-[clamp(1.25rem,3.5vh,2.5rem)] pt-[clamp(1.5rem,5vh,3.5rem)]">
         <h1
           style={delay(400)}

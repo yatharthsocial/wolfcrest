@@ -1,16 +1,23 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Metadata } from "next";
+import { breadcrumbJsonLd, summitJsonLd, pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
 import { Reveal } from "@/components/media/reveal";
 import { PosterBanner } from "@/components/poster-banner";
 import { SocialLinks } from "@/components/social-links";
 import { TransitionLink } from "@/components/transition-link";
 import { contact, mapsLink } from "@/content/contact";
 
-export const metadata: Metadata = {
-  title: "Dubai Property Connect | The Wolf Crest",
+export const metadata: Metadata = pageMetadata({
+  path: "/dubai-property-connect",
+  image: {
+    url: "/dubai-property-connect/opengraph-image.jpg",
+    alt: "Dubai Property Connect: Property & Investment Summit by The Wolf Crest Real Estate, 18 Dec 2026, 5 PM onwards, The Avatar, Mangaluru",
+  },
+  title: "Dubai Property Connect Summit, Mangaluru & Contact",
   description:
-    "Visit The Wolf Crest Real Estate in Al Garhoud, Dubai, or reach us by phone, WhatsApp or email.",
-};
+    "Dubai Property Connect: meet Dubai’s leading developers in person at The Avatar, Mangaluru on 18 Dec 2026 from 5 PM. Or visit The Wolf Crest Real Estate in Al Garhoud, Dubai, or reach us by phone, WhatsApp or email.",
+});
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
@@ -70,6 +77,7 @@ export default function DubaiPropertyConnectPage() {
 
   return (
     <main className="relative w-full bg-background text-white">
+      <JsonLd data={[breadcrumbJsonLd("/dubai-property-connect", "Dubai Property Connect"), summitJsonLd()]} />
       <header
         style={delay(500)}
         className="fade-up flex items-center justify-between gap-6 border-b border-white/25 px-[5vw] py-[clamp(1rem,2.6vh,1.75rem)] text-xs uppercase tracking-[0.22em] text-white/75"
