@@ -3,15 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import poster from "@/assets/poster-dubai-property-connect.png";
-import mobilePoster from "@/assets/poster-dubai-property-connect-mobile-landscape.png";
+import poster from "@/assets/poster-dubai-property-connect-popup.png";
 import { BookingForm } from "./booking-form";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
 const POSTER_ALT =
   "Dubai Property Connect: Property & Investment Summit, 18 Dec 2026, 5 PM onwards, The Avatar, Mangaluru";
-/** Desktop gets the landscape poster, phones and tablets the portrait one */
+/** Below this width the poster gets a smaller size and the button moves under it */
 const DESKTOP = "(min-width: 1024px)";
 
 /** How long after landing before the poster appears */
@@ -143,7 +142,7 @@ export function PosterPopup() {
           <CloseButton onClick={close} />
 
           <Image
-            src={mobile ? mobilePoster : poster}
+            src={poster}
             alt={POSTER_ALT}
             preload
             onLoad={() => setLoaded(true)}
