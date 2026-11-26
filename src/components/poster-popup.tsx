@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
 const POSTER_ALT =
   "Dubai Property Connect: Property & Investment Summit, 18 Dec 2026, 5 PM onwards, The Avatar, Mangaluru";
-/** Below this width the poster gets a smaller size and the button moves under it */
+/** Below this width the poster gets its phone/tablet sizing */
 const DESKTOP = "(min-width: 1024px)";
 
 /** How long after landing before the poster appears */
@@ -133,16 +133,16 @@ export function PosterPopup() {
           aria-hidden={booking}
           onClick={(e) => e.stopPropagation()}
           className={`relative ${
-            // Both posters are landscape (1.6:1); on mobile leave room for the button bar below
-            mobile ? "w-[min(92vw,calc((86svh-3rem)*1.6))]" : "w-[min(92vw,1100px,calc(88svh*1.6))]"
+            // The poster is landscape (1.6:1)
+            mobile ? "w-[min(92vw,calc(86svh*1.6))]" : "w-[min(92vw,1100px,calc(88svh*1.6))]"
           } overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.6)] [grid-area:1/1] ${SWAP} ${
             booking ? "pointer-events-none scale-[0.94] opacity-0 blur-[2px]" : "scale-100 opacity-100 blur-0 delay-150"
           }`}
         >
           <CloseButton onClick={close} />
 
-          {/* Wrapped so the call link is placed against the poster alone, not the mobile button bar below it */}
-          <div className="relative">
+          {/* The poster plus everything placed on it; sizes on it scale with its width (cqw) */}
+          <div className="@container relative">
             <Image
               src={poster}
               alt={POSTER_ALT}
@@ -151,6 +151,22 @@ export function PosterPopup() {
               sizes={mobile ? "92vw" : "min(92vw, 1100px)"}
               className="block h-auto w-full"
             />
+
+            {/* Sits in the empty space under the date, on the poster's left margin.
+                On phones it's sized off the poster's width so it stays clear of the photos */}
+            <button
+              type="button"
+              onClick={openForm}
+              className={`${inter.className} absolute left-[4%] flex cursor-pointer items-center bg-[#F2C46D] ${
+                mobile
+                  ? "top-[73%] h-[6.4cqw] gap-[1.6cqw] px-[2cqw] text-[2.2cqw] tracking-[0.1em]"
+                  : "top-[75%] h-[52px] gap-8 px-6 text-[13px] tracking-[0.18em]"
+              } font-bold uppercase text-[#0A0908] transition-colors hover:bg-[#F7D48E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C46D]`}
+            >
+              Book your slot
+              <span aria-hidden className={`${mobile ? "text-[3.2cqw]" : "text-lg"} leading-none tracking-normal`}>→</span>
+            </button>
+
             {/* Makes the poster's printed "Call now" bar (its bottom 6%) dial the number */}
             <a
               href="tel:+919148558578"
@@ -158,21 +174,6 @@ export function PosterPopup() {
               className="absolute inset-x-0 bottom-0 h-[6%] transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#0A0908]"
             />
           </div>
-
-          {/* Desktop: sits in the empty space under the date, on the poster's left margin.
-              Mobile: the landscape poster is too small for that, so it's a full-width bar below it */}
-          <button
-            type="button"
-            onClick={openForm}
-            className={`${inter.className} flex cursor-pointer items-center bg-[#F2C46D] ${
-              mobile
-                ? "h-12 w-full justify-center gap-4 text-xs"
-                : "absolute left-[4%] top-[75%] h-[52px] gap-8 px-6 text-[13px]"
-            } font-bold uppercase tracking-[0.18em] text-[#0A0908] transition-colors hover:bg-[#F7D48E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C46D]`}
-          >
-            Book your slot
-            <span aria-hidden className="text-lg leading-none tracking-normal">→</span>
-          </button>
         </div>
 
         {formMounted && (
