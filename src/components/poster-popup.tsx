@@ -141,14 +141,23 @@ export function PosterPopup() {
         >
           <CloseButton onClick={close} />
 
-          <Image
-            src={poster}
-            alt={POSTER_ALT}
-            preload
-            onLoad={() => setLoaded(true)}
-            sizes={mobile ? "92vw" : "min(92vw, 1100px)"}
-            className="block h-auto w-full"
-          />
+          {/* Wrapped so the call link is placed against the poster alone, not the mobile button bar below it */}
+          <div className="relative">
+            <Image
+              src={poster}
+              alt={POSTER_ALT}
+              preload
+              onLoad={() => setLoaded(true)}
+              sizes={mobile ? "92vw" : "min(92vw, 1100px)"}
+              className="block h-auto w-full"
+            />
+            {/* Makes the poster's printed "Call now" bar (its bottom 6%) dial the number */}
+            <a
+              href="tel:+919148558578"
+              aria-label="Call now: +91 91485 58578"
+              className="absolute inset-x-0 bottom-0 h-[6%] transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#0A0908]"
+            />
+          </div>
 
           {/* Desktop: sits in the empty space under the date, on the poster's left margin.
               Mobile: the landscape poster is too small for that, so it's a full-width bar below it */}
