@@ -87,6 +87,10 @@ export function organizationJsonLd() {
     image: `${SITE_URL}/opengraph-image.jpg`,
     email: site.email,
     telephone: site.telephone,
+    contactPoint: [
+      { "@type": "ContactPoint", telephone: site.telephone, contactType: "sales", areaServed: "AE", availableLanguage: ["English"] },
+      { "@type": "ContactPoint", telephone: contact.indiaPhone.href.replace("tel:", ""), contactType: "sales", areaServed: "IN", availableLanguage: ["English"] },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: `${contact.address.lines[0]}, ${contact.address.lines[1]}`,

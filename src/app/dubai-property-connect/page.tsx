@@ -137,8 +137,11 @@ export default function DubaiPropertyConnectPage() {
               Landmark: {contact.address.landmark}
             </span>
           </Row>
-          <Row label="Call" href={contact.phone.href}>
+          <Row label="Call (UAE)" href={contact.phone.href}>
             {contact.phone.label}
+          </Row>
+          <Row label="Call (India)" href={contact.indiaPhone.href}>
+            {contact.indiaPhone.label}
           </Row>
           <Row label="WhatsApp" href={contact.whatsapp.href} external>
             {contact.whatsapp.label}

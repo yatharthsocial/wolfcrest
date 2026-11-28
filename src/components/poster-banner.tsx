@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import poster from "@/assets/poster-dubai-property-connect.png";
+import poster from "@/assets/poster-dubai-property-connect-popup.png";
+import { contact } from "@/content/contact";
 import { BookingForm } from "./booking-form";
 import { CloseButton } from "./poster-popup";
 
@@ -54,29 +55,27 @@ export function PosterBanner() {
 
   return (
     <>
-      <figure className="relative overflow-hidden border border-white/15 bg-black">
+      {/* Same poster as the popup; sizes on it scale with its width (cqw) so it fits every screen */}
+      <figure className="@container relative overflow-hidden border border-white/15 bg-black">
         <Image src={poster} alt={POSTER_ALT} placeholder="blur" sizes="(min-width: 1024px) 88vw, 100vw" className="block h-auto w-full" />
 
-        {/* On tablets and up it sits on the poster, under the date, on the poster's left margin */}
+        {/* Sits in the empty space under the date, on the poster's left margin */}
         <button
           type="button"
           onClick={show}
-          className={`${buttonBase} absolute left-[4%] top-[75%] h-[clamp(40px,3.6vw,56px)] gap-[clamp(1.25rem,2vw,2.25rem)] px-[clamp(14px,1.6vw,26px)] text-[clamp(10px,0.9vw,14px)] max-md:hidden`}
+          className={`${buttonBase} absolute left-[4%] top-[73%] h-[6.4cqw] max-h-14 gap-[1.6cqw] px-[2cqw] text-[min(2.2cqw,14px)] tracking-[0.1em] md:top-[75%] md:h-[4.7cqw] md:px-[1.6cqw] md:text-[min(1.18cqw,14px)] md:tracking-[0.18em]`}
         >
           Book your slot
           <span aria-hidden className="text-[1.4em] leading-none tracking-normal">→</span>
         </button>
-      </figure>
 
-      {/* On phones the poster is too small to hold it, so it goes underneath */}
-      <button
-        type="button"
-        onClick={show}
-        className={`${buttonBase} mt-4 h-[52px] w-full justify-between px-6 text-[13px] md:hidden`}
-      >
-        Book your slot
-        <span aria-hidden className="text-lg leading-none tracking-normal">→</span>
-      </button>
+        {/* Makes the poster's printed "Call now" bar (its bottom 6%) dial the number */}
+        <a
+          href={contact.indiaPhone.href}
+          aria-label={`Call now: ${contact.indiaPhone.label}`}
+          className="absolute inset-x-0 bottom-0 h-[6%] transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#0A0908]"
+        />
+      </figure>
 
       {mounted && (
         <div

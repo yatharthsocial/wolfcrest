@@ -5,9 +5,9 @@
 
 export const contact = {
   phone: { label: "+971 50 420 8578", href: "tel:+971504208578" },
-  // TODO: confirm this number. UAE mobiles have 9 digits after +971 and this
-  // one has 8, so the link may not open a chat.
-  whatsapp: { label: "+971 55 966 695", href: "https://wa.me/97155966695" },
+  // India line, also printed on the Dubai Property Connect poster's "Call now" bar
+  indiaPhone: { label: "+91 91485 58578", href: "tel:+919148558578" },
+  whatsapp: { label: "+91 91485 58578", href: "https://wa.me/919148558578" },
   email: { label: "info@thewolfcrest.com", href: "mailto:info@thewolfcrest.com" },
   address: {
     lines: ["Office No. B6, next to Al Garhoud Hospital", "Behind DHL Warehouse", "Al Garhoud, Dubai, UAE"],

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import poster from "@/assets/poster-dubai-property-connect-popup.png";
+import { contact } from "@/content/contact";
 import { BookingForm } from "./booking-form";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
@@ -169,8 +170,8 @@ export function PosterPopup() {
 
             {/* Makes the poster's printed "Call now" bar (its bottom 6%) dial the number */}
             <a
-              href="tel:+919148558578"
-              aria-label="Call now: +91 91485 58578"
+              href={contact.indiaPhone.href}
+              aria-label={`Call now: ${contact.indiaPhone.label}`}
               className="absolute inset-x-0 bottom-0 h-[6%] transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#0A0908]"
             />
           </div>
