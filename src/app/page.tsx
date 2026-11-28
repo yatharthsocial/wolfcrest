@@ -5,6 +5,7 @@ import { CitySwitch, HeroBackdrop, HeroCityProvider } from "@/components/hero-ci
 import { SocialLinks } from "@/components/social-links";
 import { TransitionLink } from "@/components/transition-link";
 import logo from "@/assets/logo-wolfcrest.png";
+import yatharthLogo from "@/assets/yatharth-logo-white.png";
 
 const navItems = [
   { label: ["About", "The Wolf", "Crest"], href: "/about" },
@@ -61,14 +62,26 @@ export default function Home() {
               <div className="flex w-full flex-col items-center gap-[clamp(1.25rem,3.5vh,2.25rem)]">
                 <SocialLinks baseDelay={1400} />
                 <span aria-hidden className="h-px w-[38%] bg-white/35" />
-                <Link href="/" className="block w-full px-[4%]">
-                  <Image
-                    src={logo}
-                    alt="The Wolf Crest Real Estate"
-                    sizes="(min-width: 1100px) 10vw, 110px"
-                    className="h-auto w-full"
-                  />
-                </Link>
+                <div className="flex w-full flex-col items-center gap-1.5">
+                  <Link href="/" className="block w-full px-[4%]">
+                    <Image
+                      src={logo}
+                      alt="The Wolf Crest Real Estate"
+                      sizes="(min-width: 1100px) 10vw, 110px"
+                      className="h-auto w-full"
+                    />
+                  </Link>
+                  <a
+                    href="https://www.yatharthsocial.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Managed by Yatharth (opens yatharthsocial.com in a new tab)"
+                    className="flex items-center gap-1.5 whitespace-nowrap text-[9px] font-light uppercase tracking-[0.2em] text-white/45 opacity-80 transition-opacity duration-500 hover:opacity-100 max-md:gap-1 max-md:text-[8px] max-md:tracking-[0.08em]"
+                  >
+                    Managed by
+                    <Image src={yatharthLogo} alt="" sizes="60px" className="h-[13px] w-auto max-md:h-[11px]" />
+                  </a>
+                </div>
               </div>
             </aside>
 
